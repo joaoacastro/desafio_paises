@@ -42,6 +42,7 @@ async function fetchCountries(){
       name: translations.pt,
       /* population: population, */ // como tem repetido pode-se eliminar o population
       population,
+      formattedPopulation: formatNumber(population),
       flag,
     };
   });
@@ -61,7 +62,7 @@ function renderCountryList(){
   let countriesHTML = "<div>";
 
   allCountries.forEach(country => {
-    const { name, flag, id, population} = country;
+    const { name, flag, id, population, formattedPopulation } = country;
 
     const countryHTML = `
       <div class='country'>
@@ -74,7 +75,7 @@ function renderCountryList(){
         <div>
           <ul>
             <li>${name}</li>
-            <li>${population}</li>
+            <li>${formattedPopulation}</li>
           </ul>
         </div>
       </div>
@@ -90,7 +91,7 @@ function renderFavorites(){
   let favoritesHTML = '<div>';
 
   favoriteCountries.forEach(country => {
-    const { name, flag, id, population } = country;
+    const { name, flag, id, population, formattedPopulation } = country;
 
     const favoriteCountryHTML =`
       <div class='country'>
@@ -103,7 +104,7 @@ function renderFavorites(){
         <div>
           <ul>
             <li>${name}</li>
-            <li>${population}</li>
+            <li>${formattedPopulation}</li>
           </ul>
         </div>
       </div>
@@ -128,8 +129,8 @@ function renderSummary(){
     return accumulator + current.population;
   }, 0);
   
-  totalPopulationList.textContent = totalPopulation;
-  totalPopulationFavorites.textContent = totalFavorites;
+  totalPopulationList.textContent = formatNumber(totalPopulation);
+  totalPopulationFavorites.textContent = formatNumber(totalFavorites);
 };
 
 function handleCountryButtons(){
@@ -167,4 +168,8 @@ function removeFromFavorites(id) {
   
   favoriteCountries = favoriteCountries.filter(country => country.id !== id);
   render();
+}
+
+function formatNumber(number) {
+  return numberFormat.format(number);
 }
